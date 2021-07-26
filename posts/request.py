@@ -17,9 +17,9 @@ def get_posts_by_category(category_id):
             p.image_url,
             p.content,
             p.approved
-        FROM post p
+        FROM posts p
         WHERE p.category_id = ?
-        """, (category_id,))
+        """, (category_id, ))
 
         posts = []
 

@@ -83,10 +83,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         elif (len(parsed)) == 3:
             #Will be our searches here, like user = this and comment = that
+            #Proper url format is domain:port/resource?key=value
             (resource, key, value) = parsed
             
             if resource == "posts" and key == "category_id":
-                get_posts_by_category(value)
+                intValue=(int(value))
+                response = f"{get_posts_by_category(intValue)}"
             else:
                 response = {}
         
