@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from posts.request import get_posts_by_category
+from posts import get_posts_by_category
 #Need to import all the functions to create, edit, delete, etc.
 
 #Didn't do any of these for subscriptions yet.
@@ -83,9 +83,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         elif (len(parsed)) == 3:
             #Will be our searches here, like user = this and comment = that
             (resource, key, value) = parsed
-
+            
             if resource == "posts" and key == "category_id":
-                response = get_posts_by_category(value)
+                get_posts_by_category(value)
             else:
                 response = {}
         
