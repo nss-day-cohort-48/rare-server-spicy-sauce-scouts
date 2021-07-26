@@ -1,8 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+#Need to import all the functions to create, edit, delete, etc.
+
+#Didn't do any of these for subscriptions yet.
 
 class HandleRequests(BaseHTTPRequestHandler):
-    """Controls the functionality of any GET, PUT, POST, DELETE requests to the server    """
+    """Controls GET, PUT, POST, DELETE requests to the server    """
 
     def parse_url(self, path):
         path_params = path.split("/")
@@ -52,13 +55,27 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         parsed = self.parse_url(self.path)
 
-        if (len(parsed)) == 2:
+        if len(parsed) == 2:
             (resource, id) = parsed
             
             #Will put all all users, posts, comment, etc stuff here.
-            if resource =="users":
-                response = f"{get_all_users()}"
+            if resource =="users": 
+                #Single item on this but will need on others.
+                if id is not None:
+                    response = f"{get_single_user(id)}"
+                else:
+                    response = f"{get_all_users()}"
+            elif resource == "posts":
+                response = get_all_posts()
 
+            elif resource == "comments":
+                response = get_all_comments()
+
+            elif resource == "categories":
+                response = get_all_categories()
+
+            elif resource == "reactions":
+                response = get_all_reactions()
             else:
                 response = []
         
@@ -70,13 +87,77 @@ class HandleRequests(BaseHTTPRequestHandler):
         
         self.wfile.write(f"{response}".encode())
 
-    # def do_POST(self):
+    def do_POST(self):
+        self._set_headers(201)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
 
-    # def do_PUT(self):
+        post_body = json.loads(post_body)
 
-    # def do_DELETE(self):
+        (resource, _) = self.parse_url(self.path)
 
+        response = None
 
+        if resource == "users":
+            response = create_user(post_body)
+        elif resource == "posts":
+            response = create_post(post_body)
+        elif resource == "comments":
+            response = create_comment(post_body)
+        elif resource == "categories":
+            response = create_category(post_body)
+        elif resource == "reactions":
+            response = create_reaction(post_body)
+
+        self.wfile.write(f"{response}".encode())
+
+    def do_PUT(self):
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        (resource, id) = self.parse_url(self.path)
+
+        success = False
+
+        # Update a single item
+        if resource == "users":
+            success = update_user(id, post_body)
+        if resource == "posts":
+            success = update_post(id, post_body)
+        if resource == "comments":
+            success = update_comment(id, post_body)
+        if resource == "categories":
+            success = update_category(id, post_body)
+        if resource == "reactions":
+            success = update_reaction(id, post_body)
+        
+        if success:
+            self._set_headers(204)
+        else:
+            self._set_headers(404)
+
+        self.wfile.write("".encode())
+
+    def do_DELETE(self):
+        self._set_headers(204)
+
+        (resource, id) = self.parse_url(self.path)
+
+        # Delete a single object from the list
+        if resource == "users":
+            delete_user(id)
+        if resource == "posts":
+            delete_post(id)
+        if resource == "comments":
+            delete_comment(id)
+        if resource == "categories":
+            delete_category(id)
+        if resource == "reaction":
+            delete_reaction(id)
+
+        self.wfile.write("".encode())
 
 # Outside of the class. 
 def main():
