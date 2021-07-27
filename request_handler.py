@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from users import get_all_users, get_single_user
+from users import get_all_users, get_single_user, create_user, delete_user, update_user
+from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription
 #Need to import all the functions to create, edit, delete, etc.
 
 #Didn't do any of these for subscriptions yet.
@@ -67,7 +68,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_users()}"
             elif resource == "posts":
-                response = get_all_posts()
+                response = get_posts_by_subscription(id)
 
             elif resource == "comments":
                 response = get_all_comments()
@@ -84,7 +85,11 @@ class HandleRequests(BaseHTTPRequestHandler):
             #Will be our searches here, like user = this and comment = that
             (resource, key, value) = parsed
 
-            response = {}
+            if resource == "posts" and key == "category_id":
+                intValue=(int(value))
+                response = f"{get_posts_by_category(intValue)}"
+            else:
+                response = {}
         
         self.wfile.write(f"{response}".encode())
 

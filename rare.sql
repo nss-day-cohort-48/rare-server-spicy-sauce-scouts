@@ -121,3 +121,5 @@ INSERT INTO `Tags` VALUES (null, 'Crafting');
 INSERT INTO `PostTags` VALUES (null, 1, 1);
 
 INSERT INTO `Categories` VALUES (null, 'Blocks');
+
+SELECT * FROM `Posts`
