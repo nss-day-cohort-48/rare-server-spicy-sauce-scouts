@@ -110,6 +110,7 @@ INSERT INTO `Posts` VALUES (null, 2, 1, 'Fake Post LOL', '06/06/2006',
 'https://twinfinite.net/wp-content/uploads/2020/10/Screen-Shot-2020-10-13-at-11.47.43-AM.jpg', 'MUNCRUFT', 'TRUE');
 
 INSERT INTO `Comments` VALUES (null, 1, 2, 'Nice Post');
+INSERT INTO `Comments` VALUES (null, 1, 2, 'Even Nicer Post');
 INSERT INTO `Comments` VALUES (null, 2, 1, 'Git Gud');
 
 INSERT INTO `Reactions` VALUES (null, 'Fire', 'https://i.pinimg.com/originals/e9/3a/6e/e93a6e90e2f5d302cba9cc870f2fbe42.png');
