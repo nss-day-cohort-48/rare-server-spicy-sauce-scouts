@@ -1,7 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+from users import get_all_users, get_single_user, create_user, delete_user, update_user
 from posts import get_posts_by_category
-from users import get_all_users, get_single_user
+
 #Need to import all the functions to create, edit, delete, etc.
 
 #Didn't do any of these for subscriptions yet.
