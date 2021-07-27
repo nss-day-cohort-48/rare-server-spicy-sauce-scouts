@@ -1,6 +1,5 @@
 import sqlite3
 import json
-from sqlite3.dbapi2 import connect
 from models import POST
 
 def get_posts_by_subscription(id):
