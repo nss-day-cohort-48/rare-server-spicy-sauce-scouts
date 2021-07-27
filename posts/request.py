@@ -98,7 +98,7 @@ def create_post(new_post):
         """, (new_post['user_id'], new_post['category_id'], new_post['title'], new_post['publication_date'],
         new_post['image_url'], new_post['content'], new_post['approved'], ))
 
-        id = db_cursor.lastrowid
+        id = db_cursor.lastrowid + 1
         new_post['id'] = id
 
     return json.dumps(new_post)
