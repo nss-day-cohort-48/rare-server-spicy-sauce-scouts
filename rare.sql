@@ -101,8 +101,8 @@ INSERT INTO `Users` VALUES (null, 'Test', 'Name', 'test@email.com', 'I was creat
 INSERT INTO `Users` VALUES (null, 'Fake', 'Guy', 'fake@email.com', 'I am a fake guy', 'fake_guy456', 'password', 
 'https://www.smashbros.com/assets_v2/img/fighter/steve/main.png', '12/08/1999', 'TRUE');
 
-INSERT INTO `Subscriptions` VALUES (null, 1, 2);
-INSERT INTO `Subscriptions` VALUES (null, 2, 1);
+INSERT INTO `Subscriptions` VALUES (null, 1, 2, "06/07/2008");
+INSERT INTO `Subscriptions` VALUES (null, 2, 1, "06/07/2008");
 
 INSERT INTO `Posts` VALUES (null, 1, 1, 'Test Post 1', '11/08/2000', 
 'https://bbts1.azureedge.net/images/p/full/2020/03/8e4048c4-6f34-49af-9498-26e1bb34fe5d.jpg', 'This is a test post', 'TRUE');
@@ -122,4 +122,5 @@ INSERT INTO `PostTags` VALUES (null, 1, 1);
 
 INSERT INTO `Categories` VALUES (null, 'Blocks');
 
-SELECT * FROM `Posts`
+SELECT * FROM `Posts`;
+

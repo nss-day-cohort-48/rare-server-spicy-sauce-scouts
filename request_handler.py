@@ -68,7 +68,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_users()}"
             elif resource == "posts":
-                response = get_posts_by_subscription(id)
+                response = get_posts()
 
             elif resource == "comments":
                 response = get_all_comments()
@@ -88,6 +88,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "posts" and key == "category_id":
                 intValue=(int(value))
                 response = f"{get_posts_by_category(intValue)}"
+            elif resource == "posts" and key == "user_id":
+                intValue=(int(value))
+                response = f"{get_posts_by_subscription(intValue)}"
             else:
                 response = {}
         
