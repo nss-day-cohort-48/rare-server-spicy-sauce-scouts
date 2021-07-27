@@ -1,36 +1,38 @@
 
 import sqlite3
 import json
-from models import Tag, posttag
+from models import Tag, PostTag
 
-def get_comments_by_post(post_id):
+def get_tags_by_post(post_id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
         SELECT
-            cm.id,
-            cm.post_id,
-            cm.author_id,
-            cm.content
-        FROM Comments cm
-        WHERE cm.post_id = ?
+            t.id,
+            t.label,
+            pt.tag_id
+            pt.post_id
+        FROM Tags t
+        JOIN PostTags pt
+            on pt.tag_id = t.id
+        WHERE pt.post_id = ?
         """, (post_id, ))
 
-        comments = []
+        tags = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            comment = Comment(row['id'], row['post_id'], row['author_id'], row['content'])
+            comment = Tag(row['id'], row['post_id'], row['author_id'], row['content'])
 
             comments.append(comment.__dict__)
 
     return json.dumps(comments)
 
 
-def get_comments_by_user (user_id):
+def get_tags_by_user (user_id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -57,7 +59,7 @@ def get_comments_by_user (user_id):
     return json.dumps(comments)
 
 
-def create_comment(new_comment):
+def create_tag(new_comment):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
@@ -75,7 +77,7 @@ def create_comment(new_comment):
     return json.dumps(new_comment)
     
 
-def delete_comment(id):
+def delete_tag(id):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
@@ -85,7 +87,7 @@ def delete_comment(id):
         """, (id, ))
 
 
-def update_comment(id, new_comment):
+def update_tag(id, new_comment):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
@@ -110,8 +112,37 @@ def update_comment(id, new_comment):
 
 ## this get_all is mainly for testing purposes.
 
-def get_all_comments():
-    """Gets all users. Mainly for testing on this app"""
+def get_all_tags():
+    """Gets all tags. Mainly for testing on this app"""
+    with sqlite3.connect("./rare.db") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            cm.id,
+            cm.post_id,
+            cm.author_id,
+            cm.content
+        FROM Comments cm
+        """)
+
+        comments = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+
+            comment = Comment(row['id'], row['post_id'], row['author_id'], row['content'])
+
+            comments.append(comment.__dict__)
+
+    return json.dumps(comments)
+
+
+def get_all_posttags():
+    """Gets all posttags. Mainly for testing on this app"""
     with sqlite3.connect("./rare.db") as conn:
 
         conn.row_factory = sqlite3.Row
