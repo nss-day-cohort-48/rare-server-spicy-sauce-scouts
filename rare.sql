@@ -92,6 +92,10 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 SELECT *
 FROM users
 
+SELECT *
+FROM Comments
+WHERE post_id = 1
+
 INSERT INTO `Categories` ('label') VALUES ('News');
 INSERT INTO `Tags` ('label') VALUES ('JavaScript');
 INSERT INTO `Reactions` ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');

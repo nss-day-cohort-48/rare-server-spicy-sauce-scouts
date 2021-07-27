@@ -1,9 +1,9 @@
-import comments
+
 import sqlite3
 import json
-from models import Comment, POST
+from models import Comment
 
-def get_comments_by_post (post_id):
+def get_comments_by_post(post_id):
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -16,7 +16,7 @@ def get_comments_by_post (post_id):
             cm.content
         FROM Comments cm
         WHERE cm.post_id = ?
-        """, (post_id,))
+        """, (post_id, ))
 
         comments = []
 
@@ -42,7 +42,7 @@ def get_comments_by_user (user_id):
             cm.author_id,
             cm.content
         FROM Comments cm
-        WHERE cm.post_id = ?
+        WHERE cm.author_id = ?
         """, (user_id,))
 
         comments = []

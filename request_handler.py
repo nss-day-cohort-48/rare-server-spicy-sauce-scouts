@@ -92,10 +92,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "posts" and key == "category_id":
                 intValue=(int(value))
                 response = f"{get_posts_by_category(intValue)}"
-            if resource == "comments" and key == "post_id":
+            elif resource == "comments" and key == "post_id":
                 intValue=(int(value))
                 response = f"{get_comments_by_post(intValue)}"
-            if resource == "comments" and key == "user_id":
+            elif resource == "comments" and key == "user_id":
                 intValue=(int(value))
                 response = f"{get_comments_by_user(intValue)}"
             else:
