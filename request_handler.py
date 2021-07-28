@@ -1,5 +1,5 @@
-from tags.request import create_tag, delete_tag, get_all_tags, get_tags_by_post, get_tags_by_user, get_all_posttags, create_posttag, delete_posttag, update_tag
-from comments.request import get_comments_by_user
+from tags import create_tag, delete_tag, get_all_tags, get_tags_by_post, get_tags_by_user, get_all_posttags, create_posttag, delete_posttag, update_tag
+from comments import get_comments_by_user
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from users import get_all_users, get_single_user, create_user, delete_user, update_user
