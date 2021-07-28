@@ -89,12 +89,7 @@ INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
-SELECT *
-FROM users
 
-SELECT *
-FROM Comments
-WHERE post_id = 1
 
 INSERT INTO `Categories` ('label') VALUES ('News');
 INSERT INTO `Tags` ('label') VALUES ('JavaScript');
@@ -124,8 +119,70 @@ INSERT INTO `PostsReactions` VALUES (null, 1, 1, 2);
 INSERT INTO `Tags` VALUES (null, 'Crafting');
 
 INSERT INTO `PostTags` VALUES (null, 1, 1);
+INSERT INTO `PostTags` VALUES (null, 2, 4);
+INSERT INTO `PostTags` VALUES (null, 2, 2);
 
 INSERT INTO `Categories` VALUES (null, 'Blocks');
 
 SELECT * FROM `Posts`;
 
+
+SELECT
+  pt.id,
+  pt.tag_id,
+  pt.post_id,
+  t.id,
+  t.label,
+  p.id,
+  p.user_id
+FROM PostTags pt
+JOIN Tags t
+  on t.id = pt.tag_id
+JOIN Posts p
+  on p.id = pt.post_id
+WHERE pt.post_id = 1
+
+SELECT
+  pt.id,
+  pt.tag_id,
+  pt.post_id,
+  t.id,
+  t.label,
+  p.id,
+  p.user_id
+FROM PostTags pt
+JOIN Tags t
+  on t.id = pt.tag_id
+JOIN Posts p
+  on p.id = pt.post_id
+WHERE p.user_id = 2
+
+SELECT * FROM PostTags
+
+SELECT * FROM Tags
+
+SELECT * FROM Posts
+
+SELECT
+  t.id,
+  t.label,
+  pt.tag_id,
+  pt.post_id,
+  p.id,
+  p.content
+FROM Tags t
+JOIN PostTags pt
+  on pt.tag_id = t.id
+JOIN Posts p
+  on p.id = pt.post_id
+WHERE post_id = 2
+
+SELECT *
+FROM users
+
+SELECT *
+FROM Posts
+
+SELECT *
+FROM Comments
+WHERE post_id = 1

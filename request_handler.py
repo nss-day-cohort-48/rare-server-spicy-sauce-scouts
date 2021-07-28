@@ -1,3 +1,4 @@
+from tags.request import create_tag, delete_tag, get_all_tags, get_tags_by_post, get_tags_by_user, get_all_posttags, create_posttag, delete_posttag, update_tag
 from comments.request import get_comments_by_user
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
@@ -81,6 +82,13 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             elif resource == "reactions":
                 response = get_all_reactions()
+
+            elif resource == "tags":
+                response = get_all_tags()
+
+            elif resource == "posttags":
+                response = get_all_posttags()
+
             else:
                 response = []
         
@@ -101,6 +109,12 @@ class HandleRequests(BaseHTTPRequestHandler):
             elif resource == "comments" and key == "user_id":
                 intValue=(int(value))
                 response = f"{get_comments_by_user(intValue)}"
+            elif resource == "tags" and key == "post_id":
+                intValue=(int(value))
+                response = f"{get_tags_by_post(intValue)}"
+            elif resource == "tags" and key == "user_id":
+                intValue=(int(value))
+                response = f"{get_tags_by_user(intValue)}"
             else:
                 response = {}
         
@@ -127,6 +141,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_category(post_body)
         elif resource == "reactions":
             response = create_reaction(post_body)
+        elif resource == "tags":
+            response = create_tag(post_body)
+        elif resource == "posttags":
+            response = create_posttag(post_body)
 
         self.wfile.write(f"{response}".encode())
 
@@ -151,6 +169,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_category(id, post_body)
         if resource == "reactions":
             success = update_reaction(id, post_body)
+        if resource == "tags":
+            success = update_tag(id, post_body)
         
         if success:
             self._set_headers(204)
@@ -175,6 +195,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_category(id)
         if resource == "reaction":
             delete_reaction(id)
+        if resource == "tags":
+            delete_tag(id)
+        if resource == "posttags":
+            delete_posttag(id)
 
         self.wfile.write("".encode())
 
