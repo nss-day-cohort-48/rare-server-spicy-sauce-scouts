@@ -100,6 +100,17 @@ def update_user(id, new_user):
         db_cursor.execute("""
         UPDATE Users
             SET
+<<<<<<< HEAD
+                first_name,
+                last_name,
+                email,
+                bio,
+                username,
+                password,
+                profile_image_url,
+                created_on,
+                active
+=======
                 first_name = ?,
                 last_name = ?,
                 email = ?,
@@ -109,6 +120,7 @@ def update_user(id, new_user):
                 profile_image_url = ?,
                 created_on = ?,
                 active = ?
+>>>>>>> main
         WHERE id = ?
         """, (new_user['first_name'], new_user['last_name'], new_user['email'], new_user['bio'], new_user['username'], new_user['password'], new_user['profile_image_url'], new_user['created_on'], new_user['active'], id, ))
 
