@@ -4,7 +4,7 @@ from comments import get_comments_by_user
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from users import get_all_users, get_single_user, create_user, delete_user, update_user
-from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription, get_single_post, get_all_posts, get_posts_by_user
+from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription, get_single_post, get_all_posts, get_posts_by_user, get_posts_by_tag
 from comments import get_comments_by_post, get_comments_by_user, create_comment, update_comment, delete_comment, get_all_comments
 from categories import get_all_categories, create_category
 
@@ -113,6 +113,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             elif resource == "posts" and key == "user_id":
                 intValue=(int(value))
                 response = f"{get_posts_by_user(intValue)}"
+            elif resource == "posts" and key == "tag_id":
+                intValue=(int(value))
+                response = f"{get_posts_by_tag(intValue)}"
             elif resource == "comments" and key == "post_id":
                 intValue=(int(value))
                 response = f"{get_comments_by_post(intValue)}"
