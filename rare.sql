@@ -127,5 +127,5 @@ INSERT INTO `PostTags` VALUES (null, 1, 1);
 
 INSERT INTO `Categories` VALUES (null, 'Blocks');
 
-SELECT * FROM `Posts`;
+SELECT * FROM `Categories`;
 
