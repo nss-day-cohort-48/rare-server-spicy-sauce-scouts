@@ -12,12 +12,16 @@ def get_tags_by_post(post_id):
         SELECT
             t.id,
             t.label,
-            pt.tag_id
-            pt.post_id
+            pt.tag_id,
+            pt.post_id,
+            p.id,
+            p.user_id
         FROM Tags t
         JOIN PostTags pt
             on pt.tag_id = t.id
-        WHERE pt.post_id = ?
+        JOIN Posts p
+            on p.id = pt.post_id
+        WHERE post_id = ?
         """, (post_id, ))
 
         tags = []
@@ -25,11 +29,11 @@ def get_tags_by_post(post_id):
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            comment = Tag(row['id'], row['post_id'], row['author_id'], row['content'])
+            tag = Tag(row['id'], row['label'])
 
-            comments.append(comment.__dict__)
+            tags.append(tag.__dict__)
 
-    return json.dumps(comments)
+    return json.dumps(tags)
 
 
 def get_tags_by_user (user_id):
@@ -39,42 +43,48 @@ def get_tags_by_user (user_id):
 
         db_cursor.execute("""
         SELECT
-            cm.id,
-            cm.post_id,
-            cm.author_id,
-            cm.content
-        FROM Comments cm
-        WHERE cm.author_id = ?
-        """, (user_id,))
+            t.id,
+            t.label,
+            pt.tag_id,
+            pt.post_id,
+            p.id,
+            p.user_id
+        FROM Tags t
+        JOIN PostTags pt
+            on pt.tag_id = t.id
+        JOIN Posts p
+            on p.id = pt.post_id
+        WHERE p.user_id = ?
+        """, (user_id, ))
 
-        comments = []
+        tags = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            comment = Comment(row['id'], row['post_id'], row['author_id'], row['content'])
+            tag = Tag(row['id'], row['label'])
 
-            comments.append(comment.__dict__)
+            tags.append(tag.__dict__)
 
-    return json.dumps(comments)
+    return json.dumps(tags)
 
 
-def create_tag(new_comment):
+def create_tag(new_tag):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        INSERT INTO Comments
-            (post_id, author_id, content)
+        INSERT INTO Tags
+            ('label')
         VALUES
-            ( ?, ?, ?);
-        """, (new_comment['post_id'], new_comment['author_id'], new_comment['content'],))
+            (?);
+        """, (new_tag['label'], ))
 
         id = db_cursor.lastrowid
 
-        new_comment['id'] = id
+        new_tag['id'] = id
 
-    return json.dumps(new_comment)
+    return json.dumps(new_tag)
     
 
 def delete_tag(id):
@@ -82,23 +92,21 @@ def delete_tag(id):
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        DELETE FROM Comments
+        DELETE FROM tags
         WHERE id = ?
         """, (id, ))
 
 
-def update_tag(id, new_comment):
+def update_tag(id, new_tag):
     with sqlite3.connect("./rare.db") as conn:
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
-        UPDATE Comments
+        UPDATE Tags
             SET
-                post_id = ?,
-                author_id = ?,
-                content = ?
+                label = ?
         WHERE id = ?
-        """, (new_comment['post_id'], new_comment['author_id'], new_comment['content'], id, ))
+        """, (new_tag['label'], id, ))
 
         rows_affected = db_cursor.rowcount
 
@@ -121,24 +129,22 @@ def get_all_tags():
 
         db_cursor.execute("""
         SELECT
-            cm.id,
-            cm.post_id,
-            cm.author_id,
-            cm.content
-        FROM Comments cm
+            t.id,
+            t.label
+        FROM Tags t
         """)
 
-        comments = []
+        tags = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
 
-            comment = Comment(row['id'], row['post_id'], row['author_id'], row['content'])
+            tag = Tag(row['id'], row['label'])
 
-            comments.append(comment.__dict__)
+            tags.append(tag.__dict__)
 
-    return json.dumps(comments)
+    return json.dumps(tags)
 
 
 def get_all_posttags():
@@ -150,21 +156,46 @@ def get_all_posttags():
 
         db_cursor.execute("""
         SELECT
-            cm.id,
-            cm.post_id,
-            cm.author_id,
-            cm.content
-        FROM Comments cm
+            pt.id,
+            pt.post_id,
+            pt.tag_id
+        FROM PostTags pt
         """)
 
-        comments = []
+        posttags = []
 
         dataset = db_cursor.fetchall()
 
         for row in dataset:
 
-            comment = Comment(row['id'], row['post_id'], row['author_id'], row['content'])
+            posttag = PostTag(row['id'], row['post_id'], row['tag_id'])
 
-            comments.append(comment.__dict__)
+            posttags.append(posttag.__dict__)
 
-    return json.dumps(comments)
+    return json.dumps(posttags)
+
+def create_posttag(new_posttag):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO PostTags
+            (post_id, tag_id)
+        VALUES
+            ( ?,?);
+        """, (new_posttag['post_id'], new_posttag['tag_id']))
+
+        id = db_cursor.lastrowid
+
+        new_posttag['id'] = id
+
+    return json.dumps(new_posttag)
+
+def delete_posttag(id):
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM PostTags
+        WHERE id = ?
+        """, (id, ))

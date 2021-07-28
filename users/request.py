@@ -72,7 +72,7 @@ def create_user(new_user):
 
         db_cursor.execute("""
         INSERT INTO Users
-            ( first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
+            (first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
         VALUES
             ( ?, ?, ?, ?, ?, ?, ?, ?, ?);
         """, (new_user['first_name'], new_user['last_name'], new_user['email'], new_user['bio'], new_user['username'], new_user['password'], new_user['profile_image_url'], datetime.now(), True))
