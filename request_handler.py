@@ -92,7 +92,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             if resource == "posts" and key == "category_id":
                 intValue=(int(value))
                 response = f"{get_posts_by_category(intValue)}"
-            elif resource == "posts" and key == "user_id":
+            elif resource == "posts" and key == "subscriber_id":
                 intValue=(int(value))
                 response = f"{get_posts_by_subscription(intValue)}"
             elif resource == "comments" and key == "post_id":
