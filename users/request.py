@@ -1,6 +1,7 @@
 import sqlite3
 import json
 from models import User
+from datetime import datetime
 
 
 def get_all_users():
@@ -74,11 +75,12 @@ def create_user(new_user):
             ( first_name, last_name, email, bio, username, password, profile_image_url, created_on, active)
         VALUES
             ( ?, ?, ?, ?, ?, ?, ?, ?, ?);
-        """, (new_user['first_name'], new_user['last_name'], new_user['email'], new_user['bio'], new_user['username'], new_user['password'], new_user['profile_image_url'], new_user['created_on'], new_user['active']))
+        """, (new_user['first_name'], new_user['last_name'], new_user['email'], new_user['bio'], new_user['username'], new_user['password'], new_user['profile_image_url'], datetime.now(), True))
 
         id = db_cursor.lastrowid
 
         new_user['id'] = id
+        new_user['active'] = True
 
     return json.dumps(new_user)
 
