@@ -105,11 +105,14 @@ def get_posts_by_tag(tag_id):
             p.image_url,
             p.content,
             p.approved,
+            pt.id,
+            pt.post_id,
+            pt.tag_id,
             t.id,
             t.label
-        FROM Posts p
-        JOIN PostTags pt
-            on pt.post_id = p.id
+        FROM PostTags pt
+        JOIN Posts p
+            on p.id = pt.post_id
         JOIN Tags t
             on t.id = pt.tag_id
         WHERE t.id = ?
@@ -121,6 +124,7 @@ def get_posts_by_tag(tag_id):
 
         for row in dataset:
                 post = POST(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'], row['image_url'],row['content'], row['approved'])
+                
                 posts.append(post.__dict__)
                 
     return json.dumps(posts)

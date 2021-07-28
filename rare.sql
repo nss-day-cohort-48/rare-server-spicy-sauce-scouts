@@ -186,3 +186,23 @@ FROM Posts
 SELECT *
 FROM Comments
 WHERE post_id = 1
+
+SELECT
+  pt.id,
+  pt.post_id,
+  pt.tag_id,
+  p.id,
+  p.user_id,
+  p.category_id,
+  p.title,
+  p.publication_date,
+  p.image_url,
+  p.content,
+  p.approved,
+  t.id,
+  t.label
+FROM PostTags pt
+LEFT JOIN Posts p
+    on p.id = pt.post_id
+LEFT JOIN Tags t
+    on t.id = pt.tag_id
