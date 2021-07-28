@@ -4,7 +4,7 @@ import json
 from users import get_all_users, get_single_user, create_user, delete_user, update_user
 from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription
 from comments import get_comments_by_post, get_comments_by_user, create_comment, update_comment, delete_comment, get_all_comments
-from categories import get_all_categories
+from categories import get_all_categories, create_category
 
 #Need to import all the functions to create, edit, delete, etc.
 
