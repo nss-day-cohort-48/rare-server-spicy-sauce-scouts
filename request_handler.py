@@ -3,7 +3,7 @@ from comments import get_comments_by_user
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from users import get_all_users, get_single_user, create_user, delete_user, update_user
-from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription
+from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription, get_single_post, get_all_posts
 from comments import get_comments_by_post, get_comments_by_user, create_comment, update_comment, delete_comment, get_all_comments
 
 #Need to import all the functions to create, edit, delete, etc.
@@ -72,7 +72,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_users()}"
             elif resource == "posts":
-                response = get_posts()
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
 
             elif resource == "comments":
                 response = get_all_comments()
