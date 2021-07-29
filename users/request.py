@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import User
+from models import User, Login
 from datetime import datetime
 
 
@@ -122,3 +122,27 @@ def update_user(id, new_user):
     else:
         # Forces 204 response by main module
         return True
+
+
+def get_user_login(email, password):
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            u.email,
+            u.password
+        FROM users u
+        WHERE u.email = ?
+        AND u.password = ?        
+        """, (email, password))
+
+        data = db_cursor.fetchone()
+        try:
+            user = Login(data['email'], data['password'], True)
+        except:
+            print("login error")
+            user = Login("", "", False)
+
+        return json.dumps(user.__dict__)

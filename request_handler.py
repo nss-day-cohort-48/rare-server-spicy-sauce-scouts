@@ -3,7 +3,7 @@ from tags import create_tag, delete_tag, get_all_tags, get_tags_by_post, get_tag
 from comments import get_comments_by_user
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from users import get_all_users, get_single_user, create_user, delete_user, update_user
+from users import get_all_users, get_single_user, create_user, delete_user, update_user, get_user_login
 from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription, get_single_post, get_all_posts, get_posts_by_user, get_posts_by_tag
 from comments import get_comments_by_post, get_comments_by_user, create_comment, update_comment, delete_comment, get_all_comments
 from categories import get_all_categories, create_category
@@ -59,6 +59,10 @@ class HandleRequests(BaseHTTPRequestHandler):
     def do_GET(self): 
         #requests to server
         self._set_headers(200)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+
+        post_body = json.loads(post_body)
         response = {}
 
         parsed = self.parse_url(self.path)
@@ -67,7 +71,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             (resource, id) = parsed
             
             #Will put all all users, posts, comment, etc stuff here.
-            if resource =="users": 
+            if resource == "login":
+                response = get_user_login(post_body['email'], post_body['password'])
+
+            elif resource =="users": 
                 #Single item on this but will need on others.
                 if id is not None:
                     response = f"{get_single_user(id)}"

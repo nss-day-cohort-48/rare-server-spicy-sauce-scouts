@@ -204,5 +204,5 @@ SELECT
 FROM PostTags pt
 LEFT JOIN Posts p
     on p.id = pt.post_id
-LEFT JOIN Tags t
+JOIN Tags t
     on t.id = pt.tag_id
