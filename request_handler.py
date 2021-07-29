@@ -59,10 +59,7 @@ class HandleRequests(BaseHTTPRequestHandler):
     def do_GET(self): 
         #requests to server
         self._set_headers(200)
-        content_len = int(self.headers.get('content-length', 0))
-        post_body = self.rfile.read(content_len)
 
-        post_body = json.loads(post_body)
         response = {}
 
         parsed = self.parse_url(self.path)
@@ -71,11 +68,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             (resource, id) = parsed
             
             #Will put all all users, posts, comment, etc stuff here.
-            if resource == "login":
-                response = get_user_login(post_body['email'], post_body['password'])
 
-            elif resource =="users": 
-                #Single item on this but will need on others.
+            if resource =="users": 
                 if id is not None:
                     response = f"{get_single_user(id)}"
                 else:
@@ -153,6 +147,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "register":
             response = create_user(post_body)
+        if resource == "login":
+            response = get_user_login(post_body['email'], post_body['password'])
         elif resource == "posts":
             response = create_post(post_body)
         elif resource == "comments":
