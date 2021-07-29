@@ -8,4 +8,5 @@ class POST():
         self.image_url = image_url
         self.content = content
         self.tags = []
+        self.reactions = []
         self.approved = approved

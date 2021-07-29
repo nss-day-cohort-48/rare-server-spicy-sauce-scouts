@@ -1,4 +1,5 @@
 
+from reactions.request import get_all_post_reactions, add_post_reaction
 from tags import create_tag, delete_tag, get_all_tags, get_tags_by_post, get_tags_by_user, get_all_posttags, create_posttag, delete_posttag, update_tag
 from comments import get_comments_by_user
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -7,7 +8,7 @@ from users import get_all_users, get_single_user, create_user, delete_user, upda
 from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription, get_single_post, get_all_posts, get_posts_by_user, get_posts_by_tag
 from comments import get_comments_by_post, get_comments_by_user, create_comment, update_comment, delete_comment, get_all_comments
 from categories import get_all_categories, create_category
-from reactions import get_all_reactions, create_reaction
+from reactions import get_all_reactions, create_reaction, get_all_post_reactions
 
 #Need to import all the functions to create, edit, delete, etc.
 
@@ -96,6 +97,9 @@ class HandleRequests(BaseHTTPRequestHandler):
             elif resource == "posttags":
                 response = get_all_posttags()
 
+            elif resource == "postreactions":
+                response = get_all_post_reactions()
+
             else:
                 response = []
         
@@ -156,6 +160,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_category(post_body)
         elif resource == "reactions":
             response = create_reaction(post_body)
+        elif resource == "postreactions":
+            response = add_post_reaction(post_body)
         elif resource == "tags":
             response = create_tag(post_body)
         elif resource == "posttags":
