@@ -168,6 +168,7 @@ def create_post(new_post):
 
         id = db_cursor.lastrowid + 1
         new_post['id'] = id
+        
 
     return json.dumps(new_post)
 
@@ -205,8 +206,31 @@ def get_all_posts():
 
         for row in dataset:
                 post = POST(row['id'], row['user_id'], row['category_id'], row['title'], row['publication_date'], row['image_url'],row['content'], row['approved'])
+
+                db_cursor.execute("""
+                SELECT
+                    t.id,
+                    t.label
+                FROM Tags t
+                JOIN PostTags pt
+                    on t.id = pt.tag_id
+                JOIN Posts p on pt.post_id = p.id
+                WHERE p.id = ?
+                """, (post.id, ))
+
+                tag_rows = db_cursor.fetchall()
+
+                for tag_row in tag_rows:
+                    tag = {
+                        'id': tag_row['id'],
+                        'label': tag_row['label']
+                    }
+                    post.tags.append(tag)
+
+
                 posts.append(post.__dict__)
-    return json.dumps(posts)
+
+        return json.dumps(posts)
 
 
 def get_single_post(id):
@@ -232,5 +256,25 @@ def get_single_post(id):
 
         post = POST(data['id'], data['user_id'], data['category_id'], data['title'], data['publication_date'], data['image_url'], data['content'], data['approved'])
 
-        return json.dumps(post.__dict__)
+        db_cursor.execute("""
+        SELECT
+            t.id,
+            t.label
+        FROM Tags t
+        JOIN PostTags pt
+            on t.id = pt.tag_id
+        JOIN Posts p on pt.post_id = p.id
+        WHERE p.id = ?
+        """, (post.id, ))
+
+        tag_rows = db_cursor.fetchall()
+
+        for tag_row in tag_rows:
+            tag = {
+                'id': tag_row['id'],
+                'label': tag_row['label']
+                }
+            post.tags.append(tag)
+
+    return json.dumps(post.__dict__)
 
