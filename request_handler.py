@@ -7,6 +7,7 @@ from users import get_all_users, get_single_user, create_user, delete_user, upda
 from posts import get_posts_by_category, update_post, create_post, delete_post, get_posts_by_subscription, get_single_post, get_all_posts, get_posts_by_user
 from comments import get_comments_by_post, get_comments_by_user, create_comment, update_comment, delete_comment, get_all_comments
 from categories import get_all_categories, create_category
+from reactions import get_all_reactions, create_reaction
 
 #Need to import all the functions to create, edit, delete, etc.
 
@@ -83,10 +84,8 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_all_comments()
 
             elif resource == "categories":
-                if id is not None:
-                    response = f"{get_single_category(id)}"
-                else:
                     response = get_all_categories()
+                    
             elif resource == "reactions":
                 response = get_all_reactions()
 
@@ -175,10 +174,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             success = update_post(id, post_body)
         if resource == "comments":
             success = update_comment(id, post_body)
-        if resource == "categories":
-            success = update_category(id, post_body)
-        if resource == "reactions":
-            success = update_reaction(id, post_body)
         if resource == "tags":
             success = update_tag(id, post_body)
         
@@ -201,10 +196,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_post(id)
         if resource == "comments":
             delete_comment(id)
-        if resource == "categories":
-            delete_category(id)
-        if resource == "reaction":
-            delete_reaction(id)
         if resource == "tags":
             delete_tag(id)
         if resource == "posttags":
