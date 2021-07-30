@@ -114,7 +114,9 @@ INSERT INTO `Comments` VALUES (null, 2, 1, 'Git Gud');
 
 INSERT INTO `Reactions` VALUES (null, 'Fire', 'https://i.pinimg.com/originals/e9/3a/6e/e93a6e90e2f5d302cba9cc870f2fbe42.png');
 
-INSERT INTO `PostsReactions` VALUES (null, 1, 1, 2);
+INSERT INTO `PostReactions` VALUES (null, 1, 4, 2);
+INSERT INTO `PostReactions` VALUES (null, 2, 3, 2);
+INSERT INTO `PostReactions` VALUES (null, 3, 1, 3);
 
 INSERT INTO `Tags` VALUES (null, 'Crafting');
 
